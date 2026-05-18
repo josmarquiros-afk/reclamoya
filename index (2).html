@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReclamoYA — Defensa del Consumidor Argentina</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --azul: #0a1628;
+    --azul-medio: #112240;
+    --acento: #e8c547;
+    --acento2: #f0a500;
+    --blanco: #f4f1eb;
+    --gris: #8892a4;
+    --verde: #2ecc71;
+    --rojo: #e74c3c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--azul);
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 48px;
+    border-bottom: 1px solid rgba(232,197,71,0.15);
+    background: rgba(10,22,40,0.95);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--acento);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--blanco); }
+
+  nav a {
+    color: var(--gris);
+    text-decoration: none;
+    margin-left: 28px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--acento); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    padding: 80px 48px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .hero-text h1 em { font-style: normal; color: var(--acento); }
+
+  .hero-text p {
+    color: var(--gris);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 460px;
+  }
+
+  .badges { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; }
+
+  .badge {
+    background: rgba(232,197,71,0.1);
+    border: 1px solid rgba(232,197,71,0.3);
+    color: var(--acento);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .stats { display: flex; gap: 40px; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--acento); }
+  .stat-label { font-size: 0.78rem; color: var(--gris); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .form-section {
+    background: var(--azul-medio);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 36px;
+  }
+
+  .form-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+  .form-subtitle { color: var(--gris); font-size: 0.9rem; margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 20px; }
+
+  label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--acento);
+    background: rgba(232,197,71,0.04);
+  }
+
+  textarea { resize: vertical; min-height: 120px; }
+  select option { background: var(--azul-medio); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .plan-asignado {
+    background: rgba(232,197,71,0.08);
+    border: 1px solid rgba(232,197,71,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  .plan-asignado.visible { display: flex; }
+  .plan-label { font-size: 0.85rem; color: var(--gris); }
+  .plan-valor { font-size: 1.1rem; font-weight: 700; color: var(--acento); }
+
+  .btn-pagar {
+    width: 100%;
+    background: linear-gradient(135deg, var(--acento), var(--acento2));
+    color: var(--azul);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-pagar:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(232,197,71,0.3);
+  }
+
+  .btn-pagar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .seguridad {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+    color: var(--gris);
+    font-size: 0.78rem;
+  }
+
+  .error-msg {
+    background: rgba(231,76,60,0.1);
+    border: 1px solid rgba(231,76,60,0.3);
+    color: #e74c3c;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* PLANES */
+  .planes-section {
+    padding: 20px 48px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .planes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 48px; }
+
+  .plan-card {
+    background: var(--azul-medio);
+    border: 1.5px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--acento), var(--acento2));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .plan-card:hover::before { transform: scaleX(1); }
+  .plan-card:hover { border-color: rgba(232,197,71,0.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+
+  .plan-tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--acento); margin-bottom: 10px; }
+  .plan-nombre { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 6px; }
+  .plan-rango { font-size: 0.82rem; color: var(--gris); margin-bottom: 16px; }
+  .plan-precio { font-size: 1.7rem; font-weight: 700; color: var(--acento); margin-bottom: 4px; }
+  .plan-precio span { font-size: 0.85rem; color: var(--gris); font-weight: 400; }
+  .plan-features { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .plan-features li { font-size: 0.85rem; color: var(--gris); display: flex; align-items: center; gap: 8px; }
+  .plan-features li::before { content: '✓'; color: var(--acento); font-weight: 700; }
+  .popular-tag { position: absolute; top: 14px; right: 14px; background: var(--acento); color: var(--azul); font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
+
+  /* RESULTADO */
+  .resultado-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 48px 60px; }
+  .resultado-section.visible { display: block; }
+
+  .resultado-card {
+    background: var(--azul-medio);
+    border: 1px solid rgba(232,197,71,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .resultado-header {
+    background: linear-gradient(135deg, rgba(232,197,71,0.15), rgba(240,165,0,0.05));
+    padding: 24px 32px;
+    border-bottom: 1px solid rgba(232,197,71,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .resultado-titulo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--acento); }
+
+  .rbadge { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; }
+  .rbadge.auto { background: rgba(46,204,113,0.2); color: var(--verde); border: 1px solid rgba(46,204,113,0.3); }
+  .rbadge.revision { background: rgba(232,197,71,0.2); color: var(--acento); border: 1px solid rgba(232,197,71,0.3); }
+
+  .resultado-body { padding: 32px; }
+
+  .resultado-texto { color: #c8d0dc; line-height: 1.8; font-size: 0.95rem; white-space: pre-wrap; }
+
+  .loading-container { display: flex; flex-direction: column; align-items: center; padding: 48px; gap: 16px; }
+  .spinner { width: 44px; height: 44px; border: 3px solid rgba(232,197,71,0.2); border-top-color: var(--acento); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: var(--gris); font-size: 0.9rem; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  .resultado-acciones { display: flex; gap: 12px; padding: 20px 32px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; }
+  .btn-accion { padding: 10px 22px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+  .btn-descargar { background: var(--acento); color: var(--azul); }
+  .btn-nueva { background: transparent; color: var(--gris); border: 1px solid rgba(255,255,255,0.1) !important; }
+  .btn-nueva:hover { color: var(--blanco); }
+
+  /* DECORACION */
+  .deco-circle { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+  .deco-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(232,197,71,0.06) 0%, transparent 70%); top: -100px; right: -100px; }
+  .deco-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,120,200,0.06) 0%, transparent 70%); bottom: 100px; left: -100px; }
+  main { position: relative; z-index: 1; }
+
+  .section-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--acento); margin-bottom: 10px; }
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0 48px; }
+
+  /* Checkout MP embebido */
+  #mp-checkout-container { margin-top: 16px; }
+
+  @media (max-width: 768px) {
+    header { padding: 18px 20px; }
+    nav { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 40px 20px; }
+    .planes-section { padding: 20px 20px 40px; }
+    .planes-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .resultado-section { padding: 0 20px 40px; }
+    hr.divider { margin: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deco-circle deco-1"></div>
+<div class="deco-circle deco-2"></div>
+
+<header>
+  <div class="logo">Reclamo<span>YA</span></div>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Cómo funciona</a>
+    <a href="#">Precios</a>
+    <a href="#">Contacto</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-text">
+      <div class="section-label">Defensa del Consumidor · Argentina</div>
+      <h1>Tu reclamo,<br><em>resuelto</em> en<br>minutos.</h1>
+      <p>Orientación legal inmediata y cartas de reclamo basadas en la Ley 24.240. Tecnología + abogados reales para proteger tus derechos como consumidor.</p>
+      <div class="badges">
+        <span class="badge">Ley 24.240</span>
+        <span class="badge">COPREC</span>
+        <span class="badge">DNDC</span>
+        <span class="badge">Código Civil</span>
+      </div>
+      <div class="stats">
+        <div>
+          <div class="stat-num">+1.200</div>
+          <div class="stat-label">Reclamos resueltos</div>
+        </div>
+        <div>
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Satisfacción</div>
+        </div>
+        <div>
+          <div class="stat-num">3min</div>
+          <div class="stat-label">Tiempo promedio</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-title">Iniciar consulta</div>
+      <div class="form-subtitle">Completá los datos y recibí tu orientación al instante.</div>
+
+      <div class="form-group">
+        <label>Tu nombre completo</label>
+        <input type="text" id="nombre" placeholder="Ej: María García">
+      </div>
+
+      <div class="form-group">
+        <label>Tu email</label>
+        <input type="email" id="email" placeholder="para recibir la carta por correo">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo de reclamo</label>
+          <select id="tipoReclamo">
+            <option value="">— Seleccioná —</option>
+            <option value="garantia">Garantía de producto</option>
+            <option value="facturacion">Cobro indebido / Facturación</option>
+            <option value="servicio">Servicio deficiente</option>
+            <option value="fraude">Publicidad engañosa</option>
+            <option value="devolucion">Devolución rechazada</option>
+            <option value="demora">Demora en entrega</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Empresa reclamada</label>
+          <input type="text" id="empresa" placeholder="Ej: Telecom, Carrefour...">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Monto estimado del perjuicio ($ARS)</label>
+        <input type="number" id="montoReclamo" placeholder="Ej: 150000" oninput="calcularPlan()">
+        <div class="plan-asignado" id="planDisplay">
+          <span class="plan-label" id="planNombre">—</span>
+          <span class="plan-valor" id="planPrecio">—</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Describí tu situación</label>
+        <textarea id="descripcion" placeholder="Contanos qué pasó, cuándo ocurrió, qué respondió la empresa..."></textarea>
+      </div>
+
+      <div class="error-msg" id="errorMsg">Por favor completá todos los campos antes de continuar.</div>
+
+      <!-- Botón que dispara MercadoPago -->
+      <button class="btn-pagar" id="btnPagar" onclick="iniciarPago()">
+        💳 Pagar y obtener asesoría
+      </button>
+
+      <!-- Aquí se monta el Checkout Pro de MP si usás Bricks -->
+      <div id="mp-checkout-container"></div>
+
+      <div class="seguridad">🔒 Pago seguro vía MercadoPago · Datos encriptados</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="planes-section">
+    <div class="section-label">Nuestros planes</div>
+    <div class="planes-grid">
+      <div class="plan-card">
+        <div class="plan-tag">Plan Básico</div>
+        <div class="plan-nombre">Respuesta Express</div>
+        <div class="plan-rango">Reclamos hasta $500.000</div>
+        <div class="plan-precio">$10.000 <span>/ consulta</span></div>
+        <ul class="plan-features">
+          <li>Orientación legal inmediata con IA</li>
+          <li>Carta de reclamo personalizada</li>
+          <li>Marco legal aplicable (Ley 24.240)</li>
+          <li>Entrega en menos de 3 minutos</li>
+        </ul>
+      </div>
+      <div class="plan-card" style="position:relative">
+        <div class="popular-tag">Popular</div>
+        <div class="plan-tag">Plan Estándar</div>
+        <div class="plan-nombre">Revisión Profesional</div>
+        <div class="plan-rango">Reclamos $500k – $2.000.000</div>
+        <div class="plan-precio">$25.000 <span>/ consulta</span></div>
+        <ul class="plan-features">
+          <li>Todo lo del Plan Básico</li>
+          <li>Revisión por abogado en 24hs</li>
+          <li>Ajuste del documento final</li>
+          <li>Recomendación de vía legal</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-tag">Plan Premium</div>
+        <div class="plan-nombre">Estrategia Legal</div>
+        <div class="plan-rango">Reclamos +$2.000.000</div>
+        <div class="plan-precio">$50.000+ <span>/ consulta</span></div>
+        <ul class="plan-features">
+          <li>Todo lo del Plan Estándar</li>
+          <li>Abogado dedicado al caso</li>
+          <li>Estrategia legal completa</li>
+          <li>Seguimiento hasta resolución</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADO IA -->
+  <section class="resultado-section" id="resultadoSection">
+    <div class="section-label">Tu asesoría legal</div>
+    <div class="resultado-card">
+      <div class="resultado-header">
+        <div class="resultado-titulo" id="resultadoTitulo">Analizando tu caso...</div>
+        <span class="rbadge" id="resultadoBadge">⚡ Procesando</span>
+      </div>
+      <div class="resultado-body">
+        <div class="loading-container" id="loadingContainer">
+          <div class="spinner"></div>
+          <div class="loading-text">Analizando tu reclamo con base en la legislación argentina...</div>
+        </div>
+        <div class="resultado-texto" id="resultadoTexto" style="display:none"></div>
+      </div>
+      <div class="resultado-acciones" id="resultadoAcciones" style="display:none">
+        <button class="btn-accion btn-descargar" onclick="descargarTexto()">⬇ Descargar carta</button>
+        <button class="btn-accion btn-nueva" onclick="nuevaConsulta()">+ Nueva consulta</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+// ================================================================
+//  CONFIGURACIÓN
+//  ⚠️  REEMPLAZÁ con tu PUBLIC KEY de MercadoPago
+//  Panel → Credenciales → Public Key (empieza con APP_USR-...)
+// ================================================================
+const MP_PUBLIC_KEY = "APP_USR-2716527b-11c4-4781-bb43-ca4206418246";
+
+// ================================================================
+const PLANES = {
+  basico:   { nombre: "Plan Básico · Express",        precio: 10000,  badge: "⚡ Respuesta Automática",  badgeClass: "auto" },
+  estandar: { nombre: "Plan Estándar · Con Revisión",  precio: 25000,  badge: "👨‍⚖️ Revisión Abogado 24hs", badgeClass: "revision" },
+  premium:  { nombre: "Plan Premium · Estrategia",     precio: 50000,  badge: "⭐ Abogado Dedicado",       badgeClass: "revision" },
+};
+
+let planActual = null;
+let textoGenerado = "";
+
+function calcularPlan() {
+  const monto = parseFloat(document.getElementById('montoReclamo').value) || 0;
+  const display = document.getElementById('planDisplay');
+
+  if (monto <= 0) { display.classList.remove('visible'); return; }
+
+  planActual = monto <= 500000 ? 'basico' : monto <= 2000000 ? 'estandar' : 'premium';
+
+  const plan = PLANES[planActual];
+  document.getElementById('planNombre').textContent = plan.nombre;
+  document.getElementById('planPrecio').textContent = '$' + plan.precio.toLocaleString('es-AR');
+  display.classList.add('visible');
+}
+
+function validarFormulario() {
+  const campos = ['nombre','email','tipoReclamo','empresa','montoReclamo','descripcion'];
+  return campos.every(id => document.getElementById(id).value.trim() !== '');
+}
+
+function iniciarPago() {
+  const errMsg = document.getElementById('errorMsg');
+
+  if (!validarFormulario()) {
+    errMsg.style.display = 'block';
+    return;
+  }
+  errMsg.style.display = 'none';
+
+  if (!planActual) calcularPlan();
+
+  // Links de pago de MercadoPago por plan
+  const LINKS_MP = {
+    basico:   "https://mpago.la/2i2dgdY",
+    estandar: "https://mpago.la/2i2dgdY",
+    premium:  "https://mpago.la/2i2dgdY",
+  };
+
+  // Guardamos los datos para usarlos en gracias.html tras el pago
+  sessionStorage.setItem('reclamoya_datos', JSON.stringify({
+    plan: planActual,
+    nombre: document.getElementById('nombre').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    empresa: document.getElementById('empresa').value.trim(),
+    tipo: document.getElementById('tipoReclamo').value,
+    monto: document.getElementById('montoReclamo').value,
+    descripcion: document.getElementById('descripcion').value.trim(),
+  }));
+
+  // Redirigimos al link de pago de MercadoPago
+  window.location.href = LINKS_MP[planActual] || LINKS_MP.basico;
+}
+
+// ================================================================
+//  GENERACIÓN DE RESPUESTA IA
+//  Esta función se llama desde gracias.html cuando el pago fue aprobado
+//  y los datos del formulario se pasan como parámetros en la URL
+// ================================================================
+async function generarRespuestaIA(params) {
+  const seccion = document.getElementById('resultadoSection');
+  if (!seccion) return;
+
+  seccion.classList.add('visible');
+  seccion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const tiposLabel = {
+    garantia: "garantía de producto", facturacion: "cobro indebido / facturación",
+    servicio: "servicio deficiente", fraude: "publicidad engañosa",
+    devolucion: "devolución rechazada", demora: "demora en entrega", otro: "reclamo general"
+  };
+
+  const prompt = `Eres un asesor legal argentino experto en Defensa del Consumidor.
+Un consumidor necesita orientación legal y una carta de reclamo formal.
+
+DATOS DEL CASO:
+- Nombre del consumidor: ${params.nombre}
+- Empresa reclamada: ${params.empresa}
+- Tipo de reclamo: ${tiposLabel[params.tipo] || params.tipo}
+- Monto del perjuicio: $${parseFloat(params.monto).toLocaleString('es-AR')} pesos argentinos
+- Descripción del problema: ${params.descripcion}
+
+Por favor generá:
+
+1. **ANÁLISIS LEGAL** (3-4 líneas): Indicá qué artículos de la Ley 24.240, el Código Civil y Comercial u otras normativas aplican al caso. Mencioná si corresponde COPREC o algún organismo provincial.
+
+2. **CARTA DE RECLAMO FORMAL**: Redactá una carta completa lista para enviar, con:
+   - Lugar y fecha (Buenos Aires, ${new Date().toLocaleDateString('es-AR', {day:'numeric',month:'long',year:'numeric'})})
+   - Datos del remitente y destinatario
+   - Objeto del reclamo
+   - Hechos numerados
+   - Fundamento legal con artículos específicos
+   - Petitorio concreto con plazo de respuesta (10 días hábiles)
+   - Cierre formal
+
+3. **PRÓXIMOS PASOS** (lista breve): Qué debe hacer el consumidor si la empresa no responde en el plazo indicado.
+
+Usá tono formal, profesional y directo. La carta debe estar lista para imprimir y enviar.`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    textoGenerado = data.content?.map(b => b.text || "").join("\n") || "No se pudo generar la respuesta.";
+
+    document.getElementById('loadingContainer').style.display = 'none';
+    const textoEl = document.getElementById('resultadoTexto');
+    textoEl.textContent = textoGenerado;
+    textoEl.style.display = 'block';
+    document.getElementById('resultadoAcciones').style.display = 'flex';
+
+    const planInfo = PLANES[params.plan] || PLANES.basico;
+    document.getElementById('resultadoTitulo').textContent = `Asesoría: ${params.empresa}`;
+    const badge = document.getElementById('resultadoBadge');
+    badge.textContent = planInfo.badge;
+    badge.className = 'rbadge ' + planInfo.badgeClass;
+
+  } catch (err) {
+    document.getElementById('loadingContainer').style.display = 'none';
+    document.getElementById('resultadoTexto').textContent = "Error al generar la respuesta. Contactá soporte.";
+    document.getElementById('resultadoTexto').style.display = 'block';
+  }
+}
+
+function descargarTexto() {
+  const blob = new Blob([textoGenerado], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'carta-reclamo-reclamoya.txt';
+  a.click();
+}
+
+function nuevaConsulta() {
+  document.getElementById('resultadoSection').classList.remove('visible');
+  ['nombre','email','empresa','montoReclamo','descripcion'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('tipoReclamo').value = '';
+  document.getElementById('planDisplay').classList.remove('visible');
+  planActual = null;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
